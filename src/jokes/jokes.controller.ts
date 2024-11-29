@@ -13,7 +13,7 @@ export class JokesController {
 
     @Get('types')
     async findAllJokes() {
-        return this.findAllJokes();
+        return this.jokesService.findAllJokes();
     }
 
     @Get('pending')
