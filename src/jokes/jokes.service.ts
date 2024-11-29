@@ -4,10 +4,14 @@ import { Joke } from './schemas/joke.schema';
 import { Model } from 'mongoose';
 import { CreateJokeDto } from './dto/create-joke.dto';
 import { JokeStatus } from './enums/joke-status.enum';
+import { TypesHttpService } from './types-http.service';
 
 @Injectable()
 export class JokesService {
-    constructor(@InjectModel(Joke.name) private jokeModel: Model<Joke>) {}
+    constructor(
+        @InjectModel(Joke.name) private jokeModel: Model<Joke>,
+        private readonly typesHttpService: TypesHttpService,
+    ) {}
 
     async createJoke(createJokeDto: CreateJokeDto): Promise<Joke> {
         const createdJoke = new this.jokeModel(createJokeDto);
@@ -20,5 +24,9 @@ export class JokesService {
 
     async findPendingJokes(): Promise<Joke[]> {
         return this.jokeModel.find({status: JokeStatus.PENDING}).exec();
+    }
+
+    async getAvailableTypes() {
+        return this.typesHttpService.getAllTypes();
     }
 }
