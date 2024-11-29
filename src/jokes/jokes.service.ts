@@ -23,15 +23,27 @@ export class JokesService {
         return this.jokeModel.find().exec();
     }
 
-    async findPendingJokes(): Promise<Joke[]> {
-        return this.jokeModel.find({status: JokeStatus.PENDING}).exec();
+    async findPendingJokes(page: number, limit: number): Promise<{ jokes: Joke[], total: number }> {
+        const skip = (page - 1) * limit;
+        const jokes = await this.jokeModel
+            .find({ status: JokeStatus.PENDING })
+            .skip(skip)
+            .limit(limit)
+            .exec();
+        
+        const total = await this.jokeModel.countDocuments({ status: JokeStatus.PENDING });
+
+        return {
+            jokes,
+            total,
+        };
     }
 
     async getAvailableTypes() {
         return this.typesHttpService.getAllTypes();
     }
 
-    async deleteJoke(jokeId: ObjectId): Promise<{ success: boolean; message: string }> {
+    async deleteJoke(jokeId: string): Promise<{ success: boolean; message: string }> {
         const result = await this.jokeModel.deleteOne({ _id: jokeId });
         
         if (result.deletedCount > 0) {

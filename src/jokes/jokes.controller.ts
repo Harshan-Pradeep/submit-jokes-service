@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { JokesService } from './jokes.service';
 import { CreateJokeDto } from './dto/create-joke.dto';
 import { isValidObjectId } from 'mongoose';
@@ -19,13 +19,19 @@ export class JokesController {
     }
 
     @Get('pending')
-    async findingPendingJokes() {
-        return this.jokesService.findPendingJokes();
+    async findingPendingJokes(
+        @Query('page') page = 1,
+        @Query('limit') limit = 10,
+    ) {
+        const parsedPage = parseInt(page as any, 10);
+        const parsedLimit = parseInt(limit as any, 10);
+        
+        return this.jokesService.findPendingJokes(parsedPage, parsedLimit);
     }
 
-    @Delete('delete')
+    @Delete('delete/:id')
     async deleteJoke(@Param('id') id: string) {
-        const jokeId = new ObjectId(id);
+        const jokeId = id;
         const result = await this.jokesService.deleteJoke(jokeId);
         return result;
     }
