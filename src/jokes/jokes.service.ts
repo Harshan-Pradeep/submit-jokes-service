@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Joke } from './schemas/joke.schema';
 import { Model} from 'mongoose';
@@ -6,6 +6,7 @@ import { CreateJokeDto } from './dto/create-joke.dto';
 import { JokeStatus } from './enums/joke-status.enum';
 import { TypesHttpService } from './types-http.service';
 import { ObjectId } from 'mongodb';
+import { UpdateJokeDto } from './dto/update-joke.dto';
 
 @Injectable()
 export class JokesService {
@@ -57,5 +58,19 @@ export class JokesService {
             success: false,
             message: 'Joke not found'
         };
+    }
+
+    async updateJoke(jokeId: string, updateJokeDto: UpdateJokeDto): Promise<Joke> {
+        const existingJoke = await this.jokeModel.findById(jokeId);
+        
+        if (!existingJoke) {
+            throw new NotFoundException(`Joke with ID ${jokeId} not found`);
+        }
+
+        return this.jokeModel.findByIdAndUpdate(
+            jokeId,
+            { $set: updateJokeDto },
+            { new: true }
+        );
     }
 }

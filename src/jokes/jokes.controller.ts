@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { JokesService } from './jokes.service';
 import { CreateJokeDto } from './dto/create-joke.dto';
 import { isValidObjectId } from 'mongoose';
 import { ObjectId } from 'mongodb';
+import { UpdateJokeDto } from './dto/update-joke.dto';
 
 @Controller('api/v1/jokes')
 export class JokesController {
@@ -34,5 +35,13 @@ export class JokesController {
         const jokeId = id;
         const result = await this.jokesService.deleteJoke(jokeId);
         return result;
+    }
+
+    @Put('update')
+    async updateJoke(
+        @Query('id') id: string,
+        @Body() updateJokeDto: UpdateJokeDto
+    ) {
+        return this.jokesService.updateJoke(id, updateJokeDto);
     }
 }
