@@ -1,19 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Joke } from './schemas/joke.schema';
-import { Model} from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateJokeDto } from './dto/create-joke.dto';
 import { JokeStatus } from './enums/joke-status.enum';
-import { TypesHttpService } from './types-http.service';
-import { ObjectId } from 'mongodb';
 import { UpdateJokeDto } from './dto/update-joke.dto';
 
 @Injectable()
 export class JokesService {
     constructor(
-        @InjectModel(Joke.name) private jokeModel: Model<Joke>,
-        private readonly typesHttpService: TypesHttpService,
-    ) {}
+        @InjectModel(Joke.name) private jokeModel: Model<Joke>
+    ) { }
 
     async createJoke(createJokeDto: CreateJokeDto): Promise<Joke> {
         const createdJoke = new this.jokeModel(createJokeDto);
@@ -25,13 +22,17 @@ export class JokesService {
     }
 
     async findPendingJokes(page: number, limit: number): Promise<{ jokes: Joke[], total: number }> {
+        if (page <= 0 || limit <= 0) {
+            throw new BadRequestException('Page and limit must be positive numbers.');
+        }
+
         const skip = (page - 1) * limit;
         const jokes = await this.jokeModel
             .find({ status: JokeStatus.PENDING })
             .skip(skip)
             .limit(limit)
             .exec();
-        
+
         const total = await this.jokeModel.countDocuments({ status: JokeStatus.PENDING });
 
         return {
@@ -40,29 +41,23 @@ export class JokesService {
         };
     }
 
-    async getAvailableTypes() {
-        return this.typesHttpService.getAllTypes();
-    }
+    async deleteJoke(jokeId: string): Promise<{ success: boolean }> {
 
-    async deleteJoke(jokeId: string): Promise<{ success: boolean; message: string }> {
         const result = await this.jokeModel.deleteOne({ _id: jokeId });
-        
+
         if (result.deletedCount > 0) {
             return {
-                success: true,
-                message: 'Joke successfully deleted'
+                success: true
             };
         }
-        
-        return {
-            success: false,
-            message: 'Joke not found'
-        };
+
+        throw new NotFoundException('Joke not found');
     }
 
     async updateJoke(jokeId: string, updateJokeDto: UpdateJokeDto): Promise<Joke> {
+
         const existingJoke = await this.jokeModel.findById(jokeId);
-        
+
         if (!existingJoke) {
             throw new NotFoundException(`Joke with ID ${jokeId} not found`);
         }

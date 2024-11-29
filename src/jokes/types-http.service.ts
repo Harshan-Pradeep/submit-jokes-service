@@ -24,7 +24,7 @@ export class TypesHttpService {
       const response = await firstValueFrom(
         this.httpService.get<Type[]>(`${this.deliveryServiceUrl}/api/v1/delivery/types`)
       );
-      return response.data;
+      return response.data['data'];
     } catch (error) {
       throw new Error(`Failed to fetch types from delivery service: ${error.message}`);
     }

@@ -11,8 +11,8 @@ import { TypesHttpService } from './types-http.service';
   imports: [
     HttpModule,
     ConfigModule.forRoot(),
-    MongooseModule.forFeature([{ name: Joke.name, schema: JokeSchema}])],
+    MongooseModule.forFeature([{ name: Joke.name, schema: JokeSchema }])],
   controllers: [JokesController],
   providers: [JokesService, TypesHttpService]
 })
-export class JokesModule {}
+export class JokesModule { }
