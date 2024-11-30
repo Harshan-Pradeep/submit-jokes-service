@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateJokeDto } from './dto/create-joke.dto';
 import { UpdateJokeDto } from './dto/update-joke.dto';
 import { Joke } from './schemas/joke.schema';
@@ -7,8 +7,9 @@ import { IJokesRepository } from './repositories/jokes.repository.interface';
 @Injectable()
 export class JokesService {
     constructor(
+        @Inject('IJokesRepository')
         private readonly jokesRepository: IJokesRepository,
-    ) { }
+      ) { }
 
     async createJoke(createJokeDto: CreateJokeDto): Promise<Joke> {
         return this.jokesRepository.create(createJokeDto);
