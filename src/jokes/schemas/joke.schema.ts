@@ -22,6 +22,9 @@ export class Joke extends Document {
     @Prop({ required: false })
     @IsString({ message: "Author must be a string" })
     author: string;
+
+    @Prop({ default: () => new Date() })
+    createdAt: Date;
 }
 
 export const JokeSchema = SchemaFactory.createForClass(Joke);
