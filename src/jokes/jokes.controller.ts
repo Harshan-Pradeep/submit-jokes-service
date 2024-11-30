@@ -25,7 +25,6 @@ export class JokesController {
     @Get('types')
     async findAllJokes() {
         const types = await this.typesHttpService.getAllTypes();
-        console.log("types",types)
         return {
             statusCode: HttpStatus.OK,
             message: 'List of joke types retrieved successfully',
