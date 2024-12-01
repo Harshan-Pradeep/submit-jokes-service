@@ -103,9 +103,8 @@ Currently, there are no tests included. Future updates will provide unit and int
 Create a `.env` file in the root directory and include the following variables:
 
 ```env
+MONGODB_URI= youe mongodb uri
 DELIVERY_SERVICE_URL=http://ec2-13-60-197-178.eu-north-1.compute.amazonaws.com
-SUBMIT_SERVICE_URL=http://ec2-65-0-99-51.ap-south-1.compute.amazonaws.com
-JWT_SECRET=your secreate
 ```
 
 An example `.env.example` file is provided for reference.
