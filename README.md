@@ -30,7 +30,7 @@ A microservice that allows users to submit jokes without authentication. It prov
 
 ```bash
 # Clone the repository
-git clone [https://github.com/Harshan-Pradeep/deliver-jokes-service.git](https://github.com/Harshan-Pradeep/submit-jokes-service.git)
+git clone https://github.com/Harshan-Pradeep/submit-jokes-service.git
 
 # Navigate into the directory
 cd submit-jokes-service
@@ -68,7 +68,7 @@ Access the application at `http://localhost:3000` | [http://ec2-65-0-99-51.ap-so
    - Install Node.js 22.x, Nginx, pm2 and npm
 4. **Clone the Repository**:
    ```bash
-   git clone [https://github.com/Harshan-Pradeep/submit-jokes-service.git](https://github.com/Harshan-Pradeep/submit-jokes-service.git)
+   git clone https://github.com/Harshan-Pradeep/submit-jokes-service.git
    ```
 5. **Install Dependencies**:
    ```bash
@@ -123,4 +123,4 @@ Access the API documentation at:
 ## Contact Information
 
 - **Name**: Harshan Pradeep
-- **LinkedIn**: [https://www.linkedin.com/in/harshan-pradeep-40712a29b/](https://www.linkedin.com/in/harshan-pradeep-40712a29b/)
+- **LinkedIn**: [https://www.linkedin.com/in/harshan-pradeep](https://www.linkedin.com/in/harshan-pradeep-40712a29b/)
