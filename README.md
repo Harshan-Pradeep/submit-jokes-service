@@ -17,8 +17,6 @@ A microservice that allows users to submit jokes without authentication. It prov
 - [Testing](#testing)
 - [Environment Variables](#environment-variables)
 - [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
 - [Contact Information](#contact-information)
 
 ## Prerequisites
